@@ -1,5 +1,6 @@
 const { DataType} = require('sequelize');
 const db = require('../config/database');
+const Category = require('./Category');
 
 const Item = db.define('Item', {
     name: {
@@ -11,12 +12,15 @@ const Item = db.define('Item', {
     quantity: {
         type: DataType.INTEGER,allowNull: false,
     },
-    category_id: {
-        type: DataType.INTEGER, allowNull: false,
-    },
     imageUrl: {
         type: DataType.STRING, allowNull: false,
     },
+
+});
+
+Item.belongsTo(Category, {
+    foreignKey: 'categoryId',
+    as: 'category',
 
 });
 
