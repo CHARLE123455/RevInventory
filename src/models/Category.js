@@ -1,10 +1,10 @@
-const { DataType } = require('sequelize');
+const { DataTypes } = require('sequelize');
 const db = require('../config/database');
 
 const Category = db.define('Category',
     {
         name: {
-            type: DataType.STRING, 
+            type: DataTypes.STRING, 
             allowNull: false,
         },
     });

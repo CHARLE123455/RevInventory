@@ -1,23 +1,25 @@
-const { DataType } = require('sequelize');
+const { DataTypes } = require('sequelize');
 const db = require('../config/database');
 
 const User = db.define('User',
     {
         name: {
-            type: DataType.STRING, allowNull: false,
+            type: DataTypes.STRING, allowNull: false,
         },
         email: {
-            type: DataType.STRING, allowNull: false, unique: true, validate: {
+            type: DataTypes.STRING, allowNull: false, unique: true, validate: {
                 isEmail: true,
             },
         },
         password: {
-            type: DataType.STRING, allowNull: false, validate: {
-                is : "(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,13}",
-        }
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                is: /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,13}/,
+            },
     },
         role: {
-            type: DataType.ENUM('admin', 'buyer') , allowNull: false,
+            type: DataTypes.ENUM('admin', 'buyer') , allowNull: false,
         },
     });
 

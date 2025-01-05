@@ -15,7 +15,7 @@ AWS.config.update(
 
 const s3 = new AWS.S3();
 
-const uploads = multer({
+const upload = multer({
     storage: multerS3({
         s3,
         bucket: process.env.S3_BUCKET_NAME,
@@ -27,4 +27,4 @@ const uploads = multer({
 });
 
 
-module.exports = uploads;
+module.exports = upload;

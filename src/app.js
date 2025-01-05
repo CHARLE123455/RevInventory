@@ -1,25 +1,31 @@
+require('dotenv').config();
 const express = require('express');
-const { StatusCodes } = require('http-status-codes');
+const cors = require('cors');
+const sequelize = require('./config/database');
+
+//Routes
+const authRoutes = require('./routes/authRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
+const itemRoutes = require('./routes/itemRoutes');
+const logRoutes = require('./routes/logRoutes');
+
+// Initialize the Application
 const app = express();
+app.use(cors());
 app.use(express.json());
 
-app.get('/home', (req, res) => {
-    var name = "Charles Owuala"
-    res.send(`Hello ${name},
-         This is the Server Entry for the RevInventory Application, 
-         and Changes will be made gradually till it all works!`);
-});
+// API Routes
 
-app.post('/add', (req, res)=> {
-    const data = [];
-    data.push(req.body);
-    res.status(StatusCodes.CREATED).send({
-        status: 'success',
-        data,
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/category', categoryRoutes);
+app.use('/api/v1/item', itemRoutes);
+app.use('/api/v1/log', logRoutes);
+
+// Sync Database and Start the Application Server
+
+sequelize.sync({alter: true}).then(() => {
+    app.listen(process.env.PORT, () => {
+        console.log(`Server is running on port ${process.env.PORT}`);
     });
-})
-
-const port = 8818;
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
 });
+

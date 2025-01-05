@@ -10,6 +10,6 @@ exports.createCategory = async (name) => {
 // Get all Categories
 exports.getAllCategories = async () => {
     const allCategories = await Category.findAll();
-    return categories;
+    return allCategories;
 };
 

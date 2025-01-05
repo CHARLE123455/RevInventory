@@ -9,7 +9,7 @@ exports.createItem = async (req, res) => {
         }else {
             imageUrl = null;
         }
-        const item = await ItemService.createItem(req.body, req.file.path);
+        const item = await ItemService.createItem(req.body, imageUrl);
         res.status(201).json(item);
     } catch (error) {
         res.status(500).json({message:'Error creating item: ' + error.message});

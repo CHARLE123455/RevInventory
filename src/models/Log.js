@@ -1,12 +1,12 @@
-const { DataType } = require('sequelize');
+const { DataTypes } = require('sequelize');
 const db = require('../config/database');
 
 const Log = db.define('Log', {
     action: {
-        type: DataType.STRING, allowNull: false,
+        type: DataTypes.STRING, allowNull: false,
     },
     details: {
-        type: DataType.STRING, allowNull: false,
+        type: DataTypes.STRING, allowNull: false,
     },
 });
 
