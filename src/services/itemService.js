@@ -37,3 +37,20 @@ exports.updateItemQuantity = async(id, quantity) => {
     });
     return item;
 };
+
+// Sell Item Service
+
+exports.sellItem = async (id, quantitySold, buyer) => {
+    const item = await Item.findByPk(id);
+    if(!item) throw new Error("Item not found");
+    if(item.quantity < quantitySold) throw new Error("Insufficient quantit,kindly restock!!!");
+    item.quantity -= quantitySold;
+    await item.save();
+    await Log.create({
+        action: 'SELL',
+        details: {
+            itemId:id, quantitySold, buyer, timestamp: new Date()
+        }
+    });
+    return item;
+}
