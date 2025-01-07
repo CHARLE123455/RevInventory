@@ -1,24 +1,29 @@
 const jwt = require('jsonwebtoken');
-const { JWT_SECRET } = require('../config/jwtConfig');
+const { verifyToken } = require('../config/jwtConfig');
 
-//Authenticate JWT
-
+// Authenticate JWT
 exports.authenticateJWT = (req, res, next) => {
-    const token = req.headers.authorization.split(' ')[1];
-    if (!token) return res.status(403).json({ message: "No token, authorization denied" });
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(403).json({ message: 'No token, authorization denied' });
+    }
+
+    const token = authHeader.split(' ')[1];
 
     try {
-        req.user = jwt.verify(token, JWT_SECRET);
+        const decodedToken = verifyToken(token);
+        req.user = decodedToken;
         next();
     } catch (error) {
-        res.status(403).json({ message: "Token is not valid" });
+        res.status(403).json({ message: 'Token is not valid' });
     }
 };
 
-// authorize admin access
+// Authorize admin access
 exports.authorizeAdmin = (req, res, next) => {
-    if (req.user.role !== 'admin') {
-        return res.status(403).json({ message: "You are not authorized to access section" });
+    if (!req.user || req.user.role !== 'admin') {
+        return res.status(403).json({ message: 'You are not authorized to access this section' });
     }
     next();
 };

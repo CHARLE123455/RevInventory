@@ -1,6 +1,5 @@
 const Item = require('../models/Item');
 const Log = require('../models/Log');
-const Category = require('../models/Category');
 
 
 // Create Item Service

@@ -5,8 +5,8 @@ const upload = require('../utils/s3Service');
 const router = express.Router();
 
 
-router.post('/create', authenticateJWT, authorizeAdmin, upload.single('image'), ItemController.createItem);
-router.put('/update/:id', authenticateJWT, authorizeAdmin, ItemController.updateItemQuantity);
-router.post('/sell/:id', authenticateJWT, authorizeAdmin, ItemController.sellItem);
+router.post('/create', upload.single('image'), ItemController.createItem);
+router.put('/update/:id', ItemController.updateItemQuantity);
+router.post('/sell/:id', ItemController.sellItem);
 
 module.exports = router;

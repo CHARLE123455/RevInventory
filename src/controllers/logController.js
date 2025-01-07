@@ -20,3 +20,14 @@ exports.getAllLogsByAction = async (req, res) => {
         res.status(500).json({message:'Error getting logs by action: ' + error.message});
     }
 };
+
+//create log controller
+exports.createLog = async (req, res) => {
+    try {
+        const { action, details } = req.body;
+        const log = await LogService.createLog(action, details);
+        res.status(201).json(log);
+    } catch (error) {
+        res.status(500).json({message:'Error creating log: ' + error.message});
+        }
+};
