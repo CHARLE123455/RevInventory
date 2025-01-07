@@ -1,11 +1,11 @@
 const express = require('express');
 const ItemController = require('../controllers/itemController');
 const {authenticateJWT, authorizeAdmin} = require('../middleware/authMiddleware');
-const upload = require('../utils/s3Service');
 const router = express.Router();
+const {upload, handleUploadError} = require('../utils/cloudinary');
 
 
-router.post('/create', upload.single('image'), ItemController.createItem);
+router.post('/create', upload.single('imageUrl'),handleUploadError, ItemController.createItem);
 router.put('/update/:id', ItemController.updateItemQuantity);
 router.post('/sell/:id', ItemController.sellItem);
 

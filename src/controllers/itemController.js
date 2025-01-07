@@ -3,16 +3,21 @@ const ItemService = require('../services/itemService');
 // create item controller
 exports.createItem = async (req, res) => {
     try {
-        let imageUrl;
-        if(req.file && req.file.location) {
-            imageUrl = req.file.location;
-        }else {
-            imageUrl = null;
+        if (!req.file) {
+            return res.status(400).json({
+                message: 'Image is required for creating an item'
+            });
         }
+        
+        const imageUrl = req.file.path;
+        
         const item = await ItemService.createItem(req.body, imageUrl);
         res.status(201).json(item);
     } catch (error) {
-        res.status(500).json({message:'Error creating item: ' + error.message});
+        res.status(500).json({
+            message: 'Error creating item: ' + error.message,
+        
+        });
     }
 };
 

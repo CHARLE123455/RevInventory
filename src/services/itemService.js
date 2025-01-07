@@ -1,55 +1,69 @@
 const Item = require('../models/Item');
 const Log = require('../models/Log');
 
-
-// Create Item Service
 exports.createItem = async (data, imageUrl) => {
+    try {
+        const { name, price, quantity, categoryId } = data;
 
-    const { name, price,quantity, category } = data;
+        // Create item with explicit field mapping
+        const item = await Item.create({
+            name,
+            price,
+            quantity,
+            categoryId,
+            imageUrl: imageUrl || null  // Explicitly handle imageUrl
+        });
 
-    const item =  await Item.create({
-        name, price, quantity, category, imageUrl
-    });
+        await Log.create({
+            action: 'CREATE',
+            details: JSON.stringify({
+                itemId: item.id,
+                name,
+                price,
+                quantity,
+                imageUrl: item.imageUrl
+            })
+        });
 
-    await Log.create({
-        action: 'CREATE',
-        details: {
-            itemId:item.id, name,price,quantity
-      }
-    })
-
-    return item;
+        return item;
+    } catch (error) {
+        throw new Error(`Failed to create item: ${error.message}`);
+    }
 };
 
-
-//Update Item Quantity Service
-exports.updateItemQuantity = async(id, quantity) => {
+exports.updateItemQuantity = async (id, quantity) => {
     const item = await Item.findByPk(id);
-    if(!item) throw new Error ("Item not found");
+    if (!item) throw new Error("Item not found");
+    
     item.quantity = quantity;
-    await Item.save();
+    await item.save();  // Changed from Item.save() to item.save()
+    
     await Log.create({
         action: 'UPDATED',
-        details: {
-            itemId:id, quantity
-        }
+        details: JSON.stringify({
+            itemId: id,
+            quantity
+        })
     });
     return item;
 };
-
-// Sell Item Service
 
 exports.sellItem = async (id, quantitySold, buyer) => {
     const item = await Item.findByPk(id);
-    if(!item) throw new Error("Item not found");
-    if(item.quantity < quantitySold) throw new Error("Insufficient quantit,kindly restock!!!");
+    if (!item) throw new Error("Item not found");
+    if (item.quantity < quantitySold) throw new Error("Insufficient quantity, kindly restock!");
+    
     item.quantity -= quantitySold;
     await item.save();
+    
     await Log.create({
         action: 'SELL',
-        details: {
-            itemId:id, quantitySold, buyer, timestamp: new Date()
-        }
+        details: JSON.stringify({
+            itemId: id,
+            quantitySold,
+            buyer,
+            timestamp: new Date()
+        })
     });
     return item;
-}
+};
