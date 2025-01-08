@@ -1,6 +1,4 @@
 # RevInventory
-This is the backend part of an Inventory Management System designed with Image Upload
-# RevInventory
 
 RevInventory is a inventory management system built with Node.js and PostgreSQL, designed designed with Image Upload.
 
