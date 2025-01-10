@@ -3,6 +3,7 @@ const ItemController = require('../controllers/itemController');
 const {authenticateJWT, authorizeAdmin} = require('../middleware/authMiddleware');
 const router = express.Router();
 const {upload, handleUploadError} = require('../utils/cloudinary');
+const { logMiddleware } = require('../middleware/logMiddleware');
 
 
 /**
@@ -70,7 +71,7 @@ const {upload, handleUploadError} = require('../utils/cloudinary');
  *       500:
  *         description: Server error
  */
-router.post('/create', upload.single('imageUrl'), handleUploadError, ItemController.createItem);
+router.post('/create', upload.single('imageUrl'), handleUploadError,logMiddleware, ItemController.createItem);
 
 /**
  * @swagger
@@ -101,7 +102,7 @@ router.post('/create', upload.single('imageUrl'), handleUploadError, ItemControl
  *       404:
  *         description: Item not found
  */
-router.put('/update/:id', ItemController.updateItemQuantity);
+router.put('/update/:id',logMiddleware, ItemController.updateItemQuantity);
 
 /**
  * @swagger
@@ -134,7 +135,7 @@ router.put('/update/:id', ItemController.updateItemQuantity);
  *       404:
  *         description: Item not found
  */
-router.post('/sell/:id', ItemController.sellItem);
+router.post('/sell/:id',logMiddleware, ItemController.sellItem);
 
 
 module.exports = router;

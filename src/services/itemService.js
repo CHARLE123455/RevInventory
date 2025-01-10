@@ -5,26 +5,14 @@ exports.createItem = async (data, imageUrl) => {
     try {
         const { name, price, quantity, categoryId } = data;
 
-        // Create item with explicit field mapping
+        // Create item with imageUrl
         const item = await Item.create({
             name,
             price,
             quantity,
             categoryId,
-            imageUrl: imageUrl || null  // Explicitly handle imageUrl
+            imageUrl: imageUrl || null
         });
-
-        await Log.create({
-            action: 'CREATE',
-            details: JSON.stringify({
-                itemId: item.id,
-                name,
-                price,
-                quantity,
-                imageUrl: item.imageUrl
-            })
-        });
-
         return item;
     } catch (error) {
         throw new Error(`Failed to create item: ${error.message}`);
@@ -36,15 +24,7 @@ exports.updateItemQuantity = async (id, quantity) => {
     if (!item) throw new Error("Item not found");
     
     item.quantity = quantity;
-    await item.save();  // Changed from Item.save() to item.save()
-    
-    await Log.create({
-        action: 'UPDATED',
-        details: JSON.stringify({
-            itemId: id,
-            quantity
-        })
-    });
+    await item.save();  
     return item;
 };
 
@@ -55,15 +35,5 @@ exports.sellItem = async (id, quantitySold, buyer) => {
     
     item.quantity -= quantitySold;
     await item.save();
-    
-    await Log.create({
-        action: 'SELL',
-        details: JSON.stringify({
-            itemId: id,
-            quantitySold,
-            buyer,
-            timestamp: new Date()
-        })
-    });
     return item;
 };

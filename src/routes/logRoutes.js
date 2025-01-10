@@ -1,6 +1,7 @@
 const express = require('express');
 const LogController = require('../controllers/logController');
 const {authenticateJWT} = require('../middleware/authMiddleware');
+const { getLogsByAction } = require('../middleware/logMiddleware');
 const router = express.Router();
 
 
@@ -57,31 +58,9 @@ router.get('/all', LogController.getAllLogs);
  *       500:
  *         description: Server error
  */
-router.get('/actions/:action', LogController.getAllLogsByAction);
+router.get('/actions/:action', getLogsByAction, (req, res) => {
+    res.status(200).json(res.locals.logs);
+});
 
-/**
- * @swagger
- * /api/logs/create:
- *   post:
- *     summary: Create a new log
- *     tags: [Logs]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               action:
- *                 type: string
- *               details:
- *                 type: object
- *     responses:
- *       201:
- *         description: Log created successfully
- *       500:
- *         description: Server error
- */
-router.post('/create', LogController.createLog);
 
 module.exports = router;
