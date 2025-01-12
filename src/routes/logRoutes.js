@@ -58,7 +58,7 @@ router.get('/all', LogController.getAllLogs);
  *       500:
  *         description: Server error
  */
-router.get('/actions/:action', getLogsByAction, (req, res) => {
+router.get('/actions', getLogsByAction, (req, res) => {
     res.status(200).json(res.locals.logs);
 });
 

@@ -56,7 +56,7 @@ const logMiddleware = async (req, res, next) => {
 // Middleware to filter logs by action
 const getLogsByAction = async (req, res, next) => {
     try {
-        const { action } = req.params;
+        const action = req.query.action;
         if (action) {
             const logs = await Log.findAll({
                 where: { action: action.toUpperCase() }
