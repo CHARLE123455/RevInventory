@@ -17,9 +17,10 @@ Access the live application here: [RevInventory](https://revinventory.onrender.c
 │   ├── authService.js
 │   ├── itemService.js
 │   ├── categoryService.js
-│   ├── logService.js
+│  
 ├── middleware/
 │   ├── authMiddleware.js
+│   ├── logMiddleware.js
 ├── models/
 │   ├── Item.js
 │   ├── Category.js
@@ -120,7 +121,7 @@ npm start
 
 
 ### Logs
-- GET `/api/v1/logs/action/:action` - Get activity logs by action
+- GET `/api/v1/logs/action` - Get activity logs by action
 - POST `/api/v1/logs/create` - Create new log entry
 
 ## Features
