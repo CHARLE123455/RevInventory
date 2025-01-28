@@ -47,7 +47,7 @@ const logMiddleware = async (req, res, next) => {
         } catch (error) {
             console.error('Logging error:', error);
             initialSend.call(this, data);
-        }
+        };
     };
 
     next();

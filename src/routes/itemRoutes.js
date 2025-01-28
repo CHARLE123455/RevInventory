@@ -1,42 +1,58 @@
 const express = require('express');
 const ItemController = require('../controllers/itemController');
-const {authenticateJWT, authorizeAdmin} = require('../middleware/authMiddleware');
-const router = express.Router();
-const {upload, handleUploadError} = require('../utils/cloudinary');
+const { upload, handleUploadError } = require('../utils/cloudinary');
 const { logMiddleware } = require('../middleware/logMiddleware');
-
+const router = express.Router();
 
 /**
  * @swagger
  * components:
  *   schemas:
- *     Item:
+ *     ItemCreateRequest:
  *       type: object
  *       required:
  *         - name
  *         - price
  *         - quantity
  *         - imageUrl
+ *         - categoryId
  *       properties:
- *         id:
- *           type: integer
- *           description: Auto-generated ID
  *         name:
  *           type: string
  *           description: Item name
  *         price:
  *           type: number
- *           format: float
  *           description: Item price
  *         quantity:
  *           type: integer
  *           description: Available quantity
  *         imageUrl:
  *           type: string
- *           description: URL of item image
+ *           format: binary
+ *           description: Item image file
  *         categoryId:
  *           type: integer
  *           description: Category ID
+ *     ItemUpdateRequest:
+ *       type: object
+ *       required:
+ *         - quantity
+ *       properties:
+ *         quantity:
+ *           type: integer
+ *           description: New quantity of the item
+ *     ItemSellRequest:
+ *       type: object
+ *       required:
+ *         - quantitySold
+ *         - buyer
+ *       properties:
+ *         quantitySold:
+ *           type: integer
+ *           description: Number of items sold
+ *         buyer:
+ *           type: string
+ *           description: Buyer's name
  */
 
 /**
@@ -44,42 +60,26 @@ const { logMiddleware } = require('../middleware/logMiddleware');
  * /api/items/create:
  *   post:
  *     summary: Create a new item
- *     security:
- *       - bearerAuth: []
  *     tags: [Items]
  *     requestBody:
  *       required: true
  *       content:
  *         multipart/form-data:
  *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *               price:
- *                 type: number
- *               quantity:
- *                 type: integer
- *               imageUrl:
- *                 type: string
- *                 format: binary
- *               categoryId:
- *                 type: integer
+ *             $ref: '#/components/schemas/ItemCreateRequest'
  *     responses:
  *       201:
  *         description: Item created successfully
  *       500:
  *         description: Server error
  */
-router.post('/create', upload.single('imageUrl'), handleUploadError,logMiddleware, ItemController.createItem);
+router.post('/create', upload.single('imageUrl'), handleUploadError, logMiddleware, ItemController.createItem);
 
 /**
  * @swagger
  * /api/items/update/{id}:
  *   put:
- *     summary: Update item quantity
- *     security:
- *       - bearerAuth: []
+ *     summary: Update an item's quantity
  *     tags: [Items]
  *     parameters:
  *       - in: path
@@ -87,30 +87,26 @@ router.post('/create', upload.single('imageUrl'), handleUploadError,logMiddlewar
  *         required: true
  *         schema:
  *           type: integer
+ *           description: Item ID
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               quantity:
- *                 type: integer
+ *             $ref: '#/components/schemas/ItemUpdateRequest'
  *     responses:
  *       200:
  *         description: Item updated successfully
  *       404:
  *         description: Item not found
  */
-router.put('/update/:id',logMiddleware, ItemController.updateItemQuantity);
+router.put('/update/:id', logMiddleware, ItemController.updateItemQuantity);
 
 /**
  * @swagger
  * /api/items/sell/{id}:
  *   post:
  *     summary: Sell an item
- *     security:
- *       - bearerAuth: []
  *     tags: [Items]
  *     parameters:
  *       - in: path
@@ -118,24 +114,19 @@ router.put('/update/:id',logMiddleware, ItemController.updateItemQuantity);
  *         required: true
  *         schema:
  *           type: integer
+ *           description: Item ID
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               quantitySold:
- *                 type: integer
- *               buyer:
- *                 type: string
+ *             $ref: '#/components/schemas/ItemSellRequest'
  *     responses:
  *       200:
  *         description: Item sold successfully
  *       404:
  *         description: Item not found
  */
-router.post('/sell/:id',logMiddleware, ItemController.sellItem);
-
+router.post('/sell/:id', logMiddleware, ItemController.sellItem);
 
 module.exports = router;
