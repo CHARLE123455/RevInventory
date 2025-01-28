@@ -12,13 +12,13 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Configure Cloudinary storage options
+// Configure Cloudinary storage
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
         folder: 'uploads', // Optional: organize uploads in a folder
         allowed_formats: ['jpg', 'jpeg', 'png'],
-        transformation: [{ width: 1000, height: 1000, crop: 'limit' }], // Optional: resize large images
+        transformation: [{ width: 1000, height: 1000, crop: 'limit' }], 
     },
 });
 
@@ -26,7 +26,7 @@ const storage = new CloudinaryStorage({
 const upload = multer({ 
     storage: storage,
     limits: {
-        fileSize: 5 * 1024 * 1024, // 5MB file size limit
+        fileSize: 5 * 1024 * 1024,
     },
     fileFilter: (req, file, cb) => {
         // Validate file types
