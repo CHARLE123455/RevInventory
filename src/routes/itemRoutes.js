@@ -4,9 +4,9 @@ const { upload, handleUploadError } = require('../utils/cloudinary');
 const { logMiddleware } = require('../middleware/logMiddleware');
 const router = express.Router();
 
-router.post('/create', upload.single('imageUrl'), handleUploadError,logMiddleware, ItemController.createItem);
-router.put('/update/:id',logMiddleware, ItemController.updateItemQuantity);
-router.post('/sell/:id',logMiddleware, ItemController.sellItem);
+// router.post('/create', upload.single('imageUrl'), handleUploadError,logMiddleware, ItemController.createItem);
+// router.put('/update/:id',logMiddleware, ItemController.updateItemQuantity);
+// router.post('/sell/:id',logMiddleware, ItemController.sellItem);
 
 /**
  * @swagger
