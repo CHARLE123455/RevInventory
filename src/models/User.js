@@ -4,10 +4,14 @@ const db = require('../config/database');
 const User = db.define('User',
     {
         name: {
-            type: DataTypes.STRING, allowNull: false,
+            type: DataTypes.STRING, 
+            allowNull: false,
         },
         email: {
-            type: DataTypes.STRING, allowNull: false, unique: true, validate: {
+            type: DataTypes.STRING, 
+            allowNull: false, 
+            unique: true, 
+            validate: {
                 isEmail: true,
             },
         },
@@ -19,7 +23,9 @@ const User = db.define('User',
             },
     },
         role: {
-            type: DataTypes.ENUM('admin', 'buyer') , allowNull: false, defaultValue: 'buyer',
+            type: DataTypes.ENUM('admin', 'buyer') , 
+            allowNull: false, 
+            defaultValue: 'buyer',
         },
     });
 
