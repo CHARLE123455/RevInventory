@@ -1,10 +1,11 @@
+/* eslint-disable no-undef */
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const sequelize = require('./config/database');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpecs = require('./swagger');
-const bodyParser = require('body-parser');
+
 
 
 //Routes

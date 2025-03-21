@@ -20,7 +20,20 @@ exports.createItem = async (req, res) => {
         });
     }
 };
-
+// get all items controller
+exports.getAllItems = async (req, res) => {
+    try{
+        const items = await ItemService.getAllItems();
+    return res.status(200).json({
+        items,
+        message: "Success"
+    })
+    }catch(error){
+        return res.status(500).json({
+            message: 'Error fetching items: ' + error.message,
+        })
+    }
+}
 // update item quantity controller
 
 exports.updateItemQuantity = async (req, res) => {

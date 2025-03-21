@@ -132,6 +132,7 @@ router.put('/update/:id', logMiddleware, ItemController.updateItemQuantity);
  *         description: Item not found
  */
 router.post('/sell/:id', logMiddleware, ItemController.sellItem);
+router.get('/all', ItemController.getAllItems)
 
 module.exports = router;
 

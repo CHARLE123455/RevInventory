@@ -17,7 +17,16 @@ exports.createItem = async (data, imageUrl) => {
     throw new Error(`Failed to create item: ${error.message}`);
   }
 };
+// get all items
+exports.getAllItems = async () => {
+  try{
+    const allItems = await Item.findAll();
+    return allItems;
 
+  }catch{
+    throw new Error('Unable to retrieve all items');
+  }
+}
 exports.updateItemQuantity = async (id, quantity) => {
   try {
     const item = await Item.findByPk(id);
@@ -30,6 +39,7 @@ exports.updateItemQuantity = async (id, quantity) => {
     throw new Error(`Failed to update item quantity: ${errors.message}`);
   }
 };
+
 
 exports.sellItem = async (id, quantitySold) => {
   const item = await Item.findByPk(id);

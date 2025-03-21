@@ -1,8 +1,8 @@
+/* eslint-disable no-undef */
 const dotenv = require('dotenv');
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
-
 dotenv.config();
 
 // Configure Cloudinary credentials
@@ -17,8 +17,8 @@ const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
         folder: 'uploads', // Optional: organize uploads in a folder
-        allowed_formats: ['jpg', 'jpeg', 'png'],
-        transformation: [{ width: 1000, height: 1000, crop: 'limit' }], 
+        allowed_formats: ['jpg', 'jpeg', 'png','pdf'],
+        transformation: [{ width: 1000, height: 1000, crop: 'limits' }], 
     },
 });
 
@@ -30,8 +30,8 @@ const upload = multer({
     },
     fileFilter: (req, file, cb) => {
         // Validate file types
-        if (!file.mimetype.startsWith('image/')) {
-            cb(new Error('Only image files are allowed!'), false);
+        if (!file.mimetype.startsWith('image/') || !file.mimetype.startsWith("file/")) {
+            cb(new Error('Only image and pdf files are allowed!'), false);
             return;
         }
         cb(null, true);
